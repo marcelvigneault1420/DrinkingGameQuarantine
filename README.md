@@ -19,6 +19,9 @@ $ npm i
 ```
 TOKEN=Ng1NwMjDTjkU3NTEyMzg1MU4.ueMf5q.lZPAjpLXnOzbQTbK7GWt36Cubtg
 ```
+
+- Run the command `$ npm start` at the root of the project
+
 #### How to get a token and add a bot to your channel
 
 - Go to `https://discordapp.com/developers/applications`
