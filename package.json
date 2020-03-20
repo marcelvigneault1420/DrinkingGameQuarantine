@@ -1,0 +1,23 @@
+{
+    "name": "drunk-bot",
+    "version": "1.0.0",
+    "description": "My first drinking bot",
+    "main": "bot.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon bot.js"
+    },
+    "keywords": [
+        "drinking",
+        "drunk",
+        "bot",
+        "discord"
+    ],
+    "author": "Marcel Vigneault <marcel.vigneault.1420@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "discord.js": "^12.0.2",
+        "dotenv": "^8.2.0",
+        "nodemon": "^2.0.2"
+    }
+}
