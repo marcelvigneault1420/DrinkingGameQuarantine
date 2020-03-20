@@ -1,47 +1,60 @@
 var { randomize } = require('../helpers/math');
-var probabilityArray = [1, 1, 1, 2, 2, 3];
-var categoryArray = ['Car brand', 'Color', '', '', '', '', '', '', ''];
 var { rollDices } = require('../games/dices');
-module.exports.giveSips = (playersArray = null) => {
-    let currString = `give ${
-        probabilityArray[randomize(probabilityArray.length) - 1]
-    } sips`;
+var probabilityArray = [1, 1, 1, 2, 2, 3];
 
-    if (playersArray !== null)
-        currString =
-            currString +
-            ` to someone else than <@${
-                playersArray[randomize(playersArray.length) - 1]
-            }>`;
-    return currString;
-};
-module.exports.takeSips = () => {
-    return `take ${
-        probabilityArray[randomize(probabilityArray.length) - 1]
-    } sips`;
-};
-module.exports.rollDices = () => {
-    return `you have rolled: ${rollDices(2, 6)}`;
-};
-module.exports.shareSips = (playersArray = null) => {
+module.exports.giveSips = (player, playersArray = null) => {
+    // Determines the number of sips to drink
     let nbSips = probabilityArray[randomize(probabilityArray.length) - 1];
-    let currString = `share ${nbSips * 2} sips`;
 
-    if (playersArray !== null)
-        currString =
-            currString +
-            ` with someone else than <@${
-                playersArray[randomize(playersArray.length) - 1]
-            }>`;
+    // If there's more than one player
+    if (playersArray.length > 1) {
+        // If playersArray isn't null, determine a player who will not drink
+        let otherPlayer = null;
+        if (playersArray !== null) {
+            do{
+                otherPlayer = playersArray[randomize(playersArray.length) - 1];
+            } while (otherPlayer !== player);
+        }
+        
+        return `Give ${nbSips} sips${otherPlayer !== null ? ' to someone other than <@${otherPlayer}>' : ''}`;
+    }
+    // If your sad and playing alone
+    else {
+        return `Playing alone is sad... Drink ${nbSips} sips`;
+    }
+};
 
-    currString = `${currString} (${nbSips} each)`;
+module.exports.takeSips = () => {
+    return `Take ${probabilityArray[randomize(probabilityArray.length) - 1]} sips`;
+};
 
-    return currString;
+module.exports.rollDices = () => {
+    return `You rolled: ${rollDices(2, 6)}`;
+};
+
+module.exports.shareSips = (player, playersArray = null) => {
+    // Determines the number of sips to drink
+    let nbSips = probabilityArray[randomize(probabilityArray.length) - 1];
+
+    // If there's more than one player
+    if (playersArray.length > 1) {
+        // If playersArray isn't null, determine a player who will not drink
+        let otherPlayer = null;
+        if (playersArray !== null) {
+            do{
+                otherPlayer = playersArray[randomize(playersArray.length) - 1];
+            } while (otherPlayer !== player);
+        }
+        
+        return `Drink ${nbSips} sips and give ${nbSips} sips${otherPlayer !== null ? ' to someone other than <@${otherPlayer}>' : ' to someone else'}`;
+    }
+    // If your sad and playing alone
+    else {
+        return `Playing alone is sad... Drink ${nbSips} sips`;
+    }
 };
 
 module.exports.category = () => {
-    return `choose a category game. The first who fail have to drink ${randomize(
-        3,
-        1
-    )} sips. Use the command !resume when you have finish`;
+    let nbSips = randomize(2, 1);
+    return `Choose a category. The first who fail have to drink ${nbSips} sips. Use the command !resume when you have finish`;
 };

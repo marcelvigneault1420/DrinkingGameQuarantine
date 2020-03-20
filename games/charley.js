@@ -95,22 +95,20 @@ module.exports.addUser = function(msgObj) {
 };
 
 module.exports.play = function(bot, pChannelId) {
-    if (!started) {
-        started = true;
-        players = [];
-        channelID = pChannelId;
+    if (started) return false;
+    
+    started = true;
+    players = [];
+    channelID = pChannelId;
 
-        startGame(bot);
+    startGame(bot);
 
-        bot.channels.cache.get(channelID).send(`The game have been started`);
-        bot.channels.cache
-            .get(channelID)
-            .send(`type !join to join the game, !stop to stop it.`);
+    bot.channels.cache.get(channelID).send(`The game have been started`);
+    bot.channels.cache
+        .get(channelID)
+        .send(`type !join to join the game, !stop to stop it.`);
 
-        return true;
-    } else {
-        return false;
-    }
+    return true;
 };
 
 module.exports.stop = () => {
@@ -118,29 +116,23 @@ module.exports.stop = () => {
         clearInterval(idInterval);
     }
 
-    if (started) {
-        started = false;
-        paused = false;
-        answer = null;
-        players = [];
-        channelID = '';
-        idInterval = null;
+    started = false;
+    paused = false;
+    answer = null;
+    players = [];
+    channelID = '';
+    idInterval = null;
 
-        return true;
-    } else {
-        return false;
-    }
+    return true;
 };
 
 module.exports.resume = bot => {
-    if (paused) {
-        paused = false;
-        answer = null;
-        bot.channels.cache.get(channelID).send(`The game have resumed.`);
-        return true;
-    } else {
-        return false;
-    }
+    if (!paused) return false;
+
+    paused = false;
+    answer = null;
+    bot.channels.cache.get(channelID).send(`The game have resumed.`);
+    return true;
 };
 
 module.exports.tryAnswer = (pAnswer, msgObj) => {
