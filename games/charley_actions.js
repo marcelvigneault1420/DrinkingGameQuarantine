@@ -1,45 +1,27 @@
 var { randomize } = require('../helpers/math');
 var probabilityArray = [1, 1, 1, 2, 2, 3];
-var categoryArray = ['Car brand', 'Color', '', '', '', '', '', '', ''];
-var { rollDices } = require('../games/dices');
 var waitingAnswer = null;
 var lastAnswer = new Date();
 
 getNbSips = (add = 0) => {
     return probabilityArray[randomize(probabilityArray.length) - 1] + add;
 };
-module.exports.giveSips = (currPlayer, nbPlayer) => {
-    let sentence = '';
-    if (nbPlayer > 1) {
-        sentence = `give ${getNbSips()} sips`;
-    }
-    // If your sad and playing alone
-    else {
-        sentence = `playing alone is sad... Drink ${getNbSips()} sips`;
-    }
 
-    return `<@${currPlayer}>, ${sentence}.`;
+giveSips = currPlayer => {
+    return `<@${currPlayer}>, give ${getNbSips()} sips.`;
 };
-module.exports.takeSips = currPlayer => {
+takeSips = currPlayer => {
     return `<@${currPlayer}>, take ${getNbSips()} sips.`;
 };
 
-module.exports.shareSips = (currPlayer, nbPlayer) => {
+shareSips = currPlayer => {
     // Determines the number of sips to drink
     let nbSips = getNbSips();
-    let sentence = '';
-    if (nbPlayer > 1) {
-        sentence = `drink ${nbSips} sips and give ${nbSips} to someone else`;
-    }
-    // If your sad and playing alone
-    else {
-        sentence = `playing alone is sad... Drink ${nbSips} sips and give ${nbSips} to yourself`;
-    }
 
-    return `<@${currPlayer}>, ${sentence}.`;
+    return `<@${currPlayer}>, drink ${nbSips} sips and give ${nbSips} to someone else.`;
 };
 
-module.exports.category = currPlayer => {
+category = currPlayer => {
     return (
         `<@${currPlayer}>, choose a category game and all the next players must say a word in that category.` +
         '\n' +
@@ -49,7 +31,7 @@ module.exports.category = currPlayer => {
     );
 };
 
-module.exports.rime = currPlayer => {
+rime = currPlayer => {
     return (
         `<@${currPlayer}>, choose a word and all the next players must say a word that rhymes with it.` +
         '\n' +
@@ -59,26 +41,30 @@ module.exports.rime = currPlayer => {
     );
 };
 
-module.exports.rule = currPlayer => {
+rule = currPlayer => {
     return (
         `<@${currPlayer}>, add a new rule everyone have to follow.` +
         '\n' +
-        `Anyone who fail to follow the new rule have to drink 1 sips. ` +
+        `Anyone who fail to follow the new rule have to drink 1 sip. ` +
         '\n' +
         `Use the command !resume when you have finish.`
     );
 };
 
-module.exports.multiplication = () => {
+multiplication = () => {
     let number1 = randomize(12);
     let number2 = randomize(12);
     waitingAnswer = number1 * number2;
     return `${number1}x${number2}. Type the answer in chat before everyone else`;
 };
 
-module.exports.randNumber = () => {
+randNumber = () => {
     waitingAnswer = randomize(9500, 10050);
     return `Type the number "${waitingAnswer}" in chat.`;
+};
+
+everyoneDrink = () => {
+    return `Everyone drink 1 sip.`;
 };
 
 module.exports.tryAnswer = pAnswer => {
@@ -107,3 +93,15 @@ module.exports.deleteAnswer = () => {
 module.exports.setAnswer = pAnswer => {
     waitingAnswer = pAnswer;
 };
+
+module.exports.actionsArray = [
+    { func: giveSips, needPause: false },
+    { func: takeSips, needPause: false },
+    { func: shareSips, needPause: false },
+    { func: everyoneDrink, needPause: false },
+    { func: category, needPause: true },
+    { func: rime, needPause: true },
+    { func: multiplication, needPause: true },
+    { func: randNumber, needPause: true },
+    { func: rule, needPause: true }
+];

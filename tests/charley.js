@@ -1,7 +1,7 @@
-var { runAllText } = require('../games/charley');
+var { runAllTests } = require('../games/charley');
 var gameActions = require('../games/charley_actions');
 module.exports.basicTests = (pBot, pCurrUser, pChannel) => {
-    runAllText(pBot, pCurrUser, pChannel);
+    runAllTests(pBot, pCurrUser, pChannel);
 
     gameActions.deleteAnswer();
     pBot.channels.cache.get(pChannel).send(`TEST: Write !t1 in the chat`);

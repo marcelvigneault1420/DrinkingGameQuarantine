@@ -16,28 +16,31 @@ module.exports = function(bot) {
             let command = message.substring(0, 2);
             let success = false;
             switch (command) {
-                case '!d':
-                    success = dices(message, msgObj);
-                    break;
-
                 case '!c':
                     success = cards(message, msgObj);
+                    break;
+
+                case '!d':
+                    success = dices(message, msgObj);
                     break;
 
                 case '!j':
                     success = charley.addUser(msgObj);
                     break;
 
+                case '!l':
+                    success = charley.logCurrentGame();
+
                 case '!p':
                     success = charley.play(bot, idChannel);
                     break;
 
-                case '!s':
-                    success = charley.stop();
-                    break;
-
                 case '!r':
                     success = charley.resume(bot);
+                    break;
+
+                case '!s':
+                    success = charley.stop();
                     break;
 
                 case '!t':
