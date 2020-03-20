@@ -1,10 +1,14 @@
 var { dices, cards, charley } = require('../games');
+var {
+    basicTests: charleyBasicTests,
+    wrintingTests: charleyWritingTests
+} = require('../tests/charley');
 var { randomize } = require('../helpers/math');
 module.exports = function(bot) {
     bot.on('message', msgObj => {
         let {
             content: message,
-            author: { bot: isBot },
+            author: { bot: isBot, id: idUser },
             channel: { id: idChannel }
         } = msgObj;
 
@@ -34,6 +38,19 @@ module.exports = function(bot) {
 
                 case '!r':
                     success = charley.resume(bot);
+                    break;
+
+                case '!t':
+                    if (charley.isPlaying()) {
+                        success = false;
+                    } else {
+                        success = true;
+                        if (message.length > 2) {
+                            charleyWritingTests(bot, idChannel, message[2]);
+                        } else {
+                            charleyBasicTests(bot, idUser, idChannel);
+                        }
+                    }
                     break;
 
                 default:
