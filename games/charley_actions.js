@@ -2,21 +2,12 @@ var { randomize } = require('../helpers/math');
 var { rollDices } = require('../games/dices');
 var probabilityArray = [1, 1, 1, 2, 2, 3];
 
-module.exports.giveSips = (player, playersArray = null) => {
+module.exports.giveSips = (nbPlayer) => {
     // Determines the number of sips to drink
     let nbSips = probabilityArray[randomize(probabilityArray.length) - 1];
 
-    // If there's more than one player
-    if (playersArray.length > 1) {
-        // If playersArray isn't null, determine a player who will not drink
-        let otherPlayer = null;
-        if (playersArray !== null) {
-            do{
-                otherPlayer = playersArray[randomize(playersArray.length) - 1];
-            } while (otherPlayer !== player);
-        }
-        
-        return `Give ${nbSips} sips${otherPlayer !== null ? ' to someone other than <@${otherPlayer}>' : ''}`;
+    if (nbPlayer > 1) {
+        return `Give ${nbSips} sips`;
     }
     // If your sad and playing alone
     else {
@@ -32,29 +23,30 @@ module.exports.rollDices = () => {
     return `You rolled: ${rollDices(2, 6)}`;
 };
 
-module.exports.shareSips = (player, playersArray = null) => {
+module.exports.shareSips = (nbPlayer) => {
     // Determines the number of sips to drink
     let nbSips = probabilityArray[randomize(probabilityArray.length) - 1];
 
-    // If there's more than one player
-    if (playersArray.length > 1) {
-        // If playersArray isn't null, determine a player who will not drink
-        let otherPlayer = null;
-        if (playersArray !== null) {
-            do{
-                otherPlayer = playersArray[randomize(playersArray.length) - 1];
-            } while (otherPlayer !== player);
-        }
-        
-        return `Drink ${nbSips} sips and give ${nbSips} sips${otherPlayer !== null ? ' to someone other than <@${otherPlayer}>' : ' to someone else'}`;
+    if (nbPlayer > 1) {
+        return `Drink ${nbSips} sips and give ${nbSips} to someone else`;
     }
     // If your sad and playing alone
     else {
-        return `Playing alone is sad... Drink ${nbSips} sips`;
+        return `Playing alone is sad... Drink ${nbSips} sips and give ${nbSips} to yourself`;
     }
 };
 
 module.exports.category = () => {
     let nbSips = randomize(2, 1);
     return `Choose a category. The first who fail have to drink ${nbSips} sips. Use the command !resume when you have finish`;
+};
+
+module.exports.rime = () => {
+    let nbSips = randomize(2, 1);
+    return `Choose a word and all the next players must say a word that rhymes with it.`
+     + `The first who fail have to drink ${nbSips} sips. Use the command !resume when you have finish`;
+};
+
+module.exports.rule = () => {
+    return `Think of a rule and say it to the other players. Once done, use the command !resume to continue playing`;
 };

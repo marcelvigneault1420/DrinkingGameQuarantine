@@ -10,11 +10,11 @@ function startGame(bot) {
     idInterval = setInterval(() => {
         if (!paused && started && players.length > 0) {
             let currPlayer = players[randomize(players.length) - 1];
-            let currentGame = randomize(6);
+            let currentGame = randomize(9);
             let actionString = '';
             switch (currentGame) {
                 case 1:
-                    actionString = gameActions.giveSips();
+                    actionString = gameActions.giveSips(players.length);
                     bot.channels.cache
                         .get(channelID)
                         .send(`<@${currPlayer}>, ${actionString}.`);
@@ -28,39 +28,35 @@ function startGame(bot) {
                     break;
 
                 case 3:
-                    actionString = gameActions.shareSips();
+                    actionString = gameActions.shareSips(players.length);
                     bot.channels.cache
                         .get(channelID)
                         .send(`<@${currPlayer}>, ${actionString}.`);
                     break;
-
+                    
                 case 4:
-                    actionString = gameActions.giveSips(players);
-                    bot.channels.cache
-                        .get(channelID)
-                        .send(`<@${currPlayer}>, ${actionString}.`);
-                    break;
-
-                case 5:
-                    actionString = gameActions.shareSips(players);
-                    bot.channels.cache
-                        .get(channelID)
-                        .send(`<@${currPlayer}>, ${actionString}.`);
-                    break;
-
-                case 6:
                     actionString = gameActions.category();
                     bot.channels.cache
                         .get(channelID)
                         .send(`<@${currPlayer}>, ${actionString}.`);
                     paused = true;
-                case 7:
+                    break;
+                    
+                case 5:
+                    actionString = gameActions.rime();
+                    bot.channels.cache
+                        .get(channelID)
+                        .send(`<@${currPlayer}>, ${actionString}.`);
+                    paused = true;
+                    break;
+                    
+                case 6:
                     bot.channels.cache
                         .get(channelID)
                         .send(`Everyone drink one sip !`);
                     break;
 
-                case 8:
+                case 7:
                     let number1 = randomize(12);
                     let number2 = randomize(12);
                     answer = number1 * number2;
@@ -72,16 +68,24 @@ function startGame(bot) {
                         );
                     break;
 
-                case 9:
+                case 8:
                     answer = randomize(8500, 1050);
                     paused = true;
                     bot.channels.cache
                         .get(channelID)
                         .send(`Type the number "${answer}" in chat.`);
                     break;
+
+                case 8:
+                    actionString = gameActions.rule();
+                    bot.channels.cache
+                        .get(channelID)
+                        .send(`<@${currPlayer}>, ${actionString}.`);
+                    paused = true;
+                    break;
             }
         }
-    }, 5000);
+    }, 30000);
 }
 
 module.exports.addUser = function(msgObj) {
