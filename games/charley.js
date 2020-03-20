@@ -82,8 +82,8 @@ module.exports.play = function(bot, pChannelId, pUserList = []) {
                 .get(channelID)
                 .send(
                     `The game have been started` +
-                    '\n' +
-                    `type !join to join the game, !stop to stop it.`
+                        '\n' +
+                        `type !join to join the game, !stop to stop it.`
                 );
         }
 

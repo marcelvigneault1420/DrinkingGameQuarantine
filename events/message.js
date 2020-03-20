@@ -1,3 +1,4 @@
+const PREFIX = '!';
 var { dices, cards, charley } = require('../games');
 var {
     basicTests: charleyBasicTests,
@@ -12,38 +13,38 @@ module.exports = function(bot) {
             channel: { id: idChannel }
         } = msgObj;
 
-        if (!isBot && message.substring(0, 1) === '!') {
-            let command = message.substring(0, 2);
+        if (!isBot && message.substring(0, PREFIX.length) === PREFIX) {
+            let command = message.substring(0, PREFIX.length + 1);
             let success = false;
             switch (command) {
-                case '!c':
+                case `${PREFIX}c`:
                     success = cards(message, msgObj);
                     break;
 
-                case '!d':
+                case `${PREFIX}d`:
                     success = dices(message, msgObj);
                     break;
 
-                case '!j':
+                case `${PREFIX}j`:
                     success = charley.addUser(msgObj);
                     break;
 
-                case '!l':
+                case `${PREFIX}l`:
                     success = charley.logCurrentGame();
 
-                case '!p':
+                case `${PREFIX}p`:
                     success = charley.play(bot, idChannel);
                     break;
 
-                case '!r':
+                case `${PREFIX}r`:
                     success = charley.resume(bot);
                     break;
 
-                case '!s':
+                case `${PREFIX}s`:
                     success = charley.stop();
                     break;
 
-                case '!t':
+                case `${PREFIX}t`:
                     if (charley.isPlaying()) {
                         success = false;
                     } else {

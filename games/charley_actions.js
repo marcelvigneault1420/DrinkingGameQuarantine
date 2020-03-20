@@ -4,7 +4,7 @@ var waitingAnswer = null;
 var lastAnswer = new Date();
 
 getNbSips = (add = 0) => {
-    return probabilityArray[randomize(probabilityArray.length) - 1] + add;
+    return probabilityArray[randomize(probabilityArray.length, -1)] + add;
 };
 
 giveSips = currPlayer => {
