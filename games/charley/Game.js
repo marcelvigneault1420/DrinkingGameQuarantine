@@ -1,5 +1,6 @@
 const { randomize } = require('../../helpers/math');
 const { actionsArray } = require('./Actions');
+const Answer = require('./Answer');
 
 const GameState = {
     STOPPED: 0,
@@ -71,6 +72,7 @@ module.exports = class Game {
             let result = action.func(pCurrPlayer);
             if (result.needPause) {
                 this.gameState = GameState.PAUSED;
+                this.answer = new Answer(result.type, result.answer);
             }
 
             this.channel.send(result.string);
@@ -81,13 +83,13 @@ module.exports = class Game {
         }
     }
 
-    addPlayer(msgObj) {
+    addPlayer(pMsgObj) {
         if (
             this.gameState !== GameState.STOPPED &&
-            !this.players.includes(msgObj.author.id)
+            !this.players.includes(pMsgObj.author.id)
         ) {
-            this.players.push(msgObj.author.id);
-            msgObj.reply(` welcome to the game`);
+            this.players.push(pMsgObj.author.id);
+            pMsgObj.reply(` welcome to the game`);
         }
     }
 
@@ -104,5 +106,17 @@ module.exports = class Game {
 
         this.channel.send(`TEST WRONG ACTION`);
         this.playAction(this.actions.length);
+    }
+
+    tryAnswer(pMessageObj) {
+        if (this.gameState === GameState.PAUSED && this.answer !== null) {
+            let result = this.answer.tryAnswer(pMessageObj);
+
+            if (result.end) {
+                this.answer = null;
+                this.channel.send(result.message);
+                this.gameState = GameState.PLAYING;
+            }
+        }
     }
 };

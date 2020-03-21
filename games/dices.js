@@ -1,8 +1,8 @@
 const { randomize } = require('../helpers/math');
 const emojis = require('../helpers/emojis');
 
-module.exports = function(message, msgObj) {
-    let info = message.split('d');
+module.exports = function(pMessage, pMsgObj) {
+    let info = pMessage.split('d');
     let returnString = '';
 
     if (info.length === 3) {
@@ -12,18 +12,18 @@ module.exports = function(message, msgObj) {
     }
 
     if (returnString.length > 0) {
-        msgObj.reply(` rolling dices: ${returnString}`);
+        pMsgObj.reply(` rolling dices: ${returnString}`);
         return true;
     }
 
     return false;
 };
 
-module.exports.rollDices = rollDices = (nbDices, size) => {
+module.exports.rollDices = rollDices = (pNbDices, pSize) => {
     let string = '';
-    if (nbDices > 0 && nbDices <= 10 && size > 0 && size < 100) {
-        for (let i = 0; i < nbDices; ++i) {
-            string = `${string} ${emojis(`dice_${randomize(size)}`)}`;
+    if (pNbDices > 0 && pNbDices <= 10 && pSize > 0 && pSize < 100) {
+        for (let i = 0; i < pNbDices; ++i) {
+            string = `${string} ${emojis(`dice_${randomize(pSize)}`)}`;
         }
     }
 

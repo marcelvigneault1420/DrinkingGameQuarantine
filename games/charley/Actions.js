@@ -2,40 +2,40 @@ const { randomize } = require('../../helpers/math');
 const probabilityArray = [1, 1, 1, 2, 2, 3];
 const ActionType = require('./ActionTypeEnum');
 
-getNbSips = (add = 0) => {
-    return probabilityArray[randomize(probabilityArray.length, -1)] + add;
+getNbSips = (pAdd = 0) => {
+    return probabilityArray[randomize(probabilityArray.length, -1)] + pAdd;
 };
 
-giveSips = currPlayer => {
+giveSips = pCurrPlayer => {
     return {
-        string: `<@${currPlayer}>, give ${getNbSips()} sips.`,
+        string: `<@${pCurrPlayer}>, give ${getNbSips()} sips.`,
         needPause: false,
         type: ActionType.TEXT
     };
 };
-takeSips = currPlayer => {
+takeSips = pCurrPlayer => {
     return {
-        string: `<@${currPlayer}>, take ${getNbSips()} sips.`,
+        string: `<@${pCurrPlayer}>, take ${getNbSips()} sips.`,
         needPause: false,
         type: ActionType.TEXT
     };
 };
 
-shareSips = currPlayer => {
+shareSips = pCurrPlayer => {
     // Determines the number of sips to drink
     let nbSips = getNbSips();
 
     return {
-        string: `<@${currPlayer}>, drink ${nbSips} sips and give ${nbSips} to someone else.`,
+        string: `<@${pCurrPlayer}>, drink ${nbSips} sips and give ${nbSips} to someone else.`,
         needPause: false,
         type: ActionType.TEXT
     };
 };
 
-category = currPlayer => {
+category = pCurrPlayer => {
     return {
         string:
-            `<@${currPlayer}>, choose a category game and all the next players must say a word in that category.` +
+            `<@${pCurrPlayer}>, choose a category game and all the next players must say a word in that category.` +
             '\n' +
             `The first who fail have to drink ${getNbSips(1)} sips.` +
             '\n' +
@@ -45,10 +45,10 @@ category = currPlayer => {
     };
 };
 
-rime = currPlayer => {
+rime = pCurrPlayer => {
     return {
         string:
-            `<@${currPlayer}>, choose a word and all the next players must say a word that rhymes with it.` +
+            `<@${pCurrPlayer}>, choose a word and all the next players must say a word that rhymes with it.` +
             '\n' +
             `The first who fail have to drink ${getNbSips(1)} sips. ` +
             '\n' +
@@ -58,10 +58,10 @@ rime = currPlayer => {
     };
 };
 
-rule = currPlayer => {
+rule = pCurrPlayer => {
     return {
         string:
-            `<@${currPlayer}>, add a new rule everyone have to follow.` +
+            `<@${pCurrPlayer}>, add a new rule everyone have to follow.` +
             '\n' +
             `Anyone who fail to follow the new rule have to drink 1 sip. ` +
             '\n' +

@@ -2,11 +2,11 @@ const PREFIX = '!';
 const { dices, cards, CharleyGame } = require('../games');
 let charley = null;
 
-module.exports = function(bot) {
-    bot.on('message', msgObj => {
+module.exports = function(pBot) {
+    pBot.on('message', msgObj => {
         let {
             content: message,
-            author: { bot: isBot, id: idUser },
+            author: { pBot: isBot, id: idUser },
             channel
         } = msgObj;
 
@@ -53,7 +53,7 @@ module.exports = function(bot) {
                     break;
             }
         } else if (!isBot) {
-            //charley.tryAnswer(message, msgObj);
+            if (charley !== null) charley.tryAnswer(msgObj);
         }
     });
 };
