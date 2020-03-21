@@ -1,5 +1,5 @@
-var { randomize } = require('../helpers/math');
-var emojis = require('../helpers/emojis');
+const { randomize } = require('../helpers/math');
+const emojis = require('../helpers/emojis');
 
 module.exports.drawCard = drawCard = () => {
     return `${randomize(13)}${emojis(`suit_${randomize(4)}`)}`;

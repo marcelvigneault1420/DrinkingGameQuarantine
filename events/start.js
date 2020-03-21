@@ -1,7 +1,7 @@
 const OVERRIDE_ARRAY = ['95635008718376960'];
 const OVERRIDE_CHANNEL = '519305408742162484';
 const OVERRIDE = false;
-var { charley } = require('../games');
+const { charley } = require('../games');
 module.exports = function(bot) {
     bot.on('ready', () => {
         console.log(`Bot is online`);

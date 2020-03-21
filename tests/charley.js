@@ -1,5 +1,5 @@
-var { runAllTests } = require('../games/charley');
-var gameActions = require('../games/charley_actions');
+const { runAllTests } = require('../games/charley');
+const gameActions = require('../games/charley_actions');
 module.exports.basicTests = (pBot, pCurrUser, pChannel) => {
     runAllTests(pBot, pCurrUser, pChannel);
 

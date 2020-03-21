@@ -1,5 +1,5 @@
-var { randomize } = require('../helpers/math');
-var emojis = require('../helpers/emojis');
+const { randomize } = require('../helpers/math');
+const emojis = require('../helpers/emojis');
 
 module.exports = function(message, msgObj) {
     let info = message.split('d');

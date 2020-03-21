@@ -1,71 +1,59 @@
 const PREFIX = '!';
-var { dices, cards, charley } = require('../games');
-var {
-    basicTests: charleyBasicTests,
-    wrintingTests: charleyWritingTests
-} = require('../tests/charley');
-var { randomize } = require('../helpers/math');
+const { dices, cards, CharleyGame } = require('../games');
+let charley = null;
+
 module.exports = function(bot) {
     bot.on('message', msgObj => {
         let {
             content: message,
             author: { bot: isBot, id: idUser },
-            channel: { id: idChannel }
+            channel
         } = msgObj;
 
         if (!isBot && message.substring(0, PREFIX.length) === PREFIX) {
             let command = message.substring(0, PREFIX.length + 1);
-            let success = false;
             switch (command) {
                 case `${PREFIX}c`:
-                    success = cards(message, msgObj);
+                    cards(message, msgObj);
                     break;
 
                 case `${PREFIX}d`:
-                    success = dices(message, msgObj);
+                    dices(message, msgObj);
                     break;
 
                 case `${PREFIX}j`:
-                    success = charley.addUser(msgObj);
+                    if (charley !== null) charley.addPlayer(msgObj);
                     break;
 
                 case `${PREFIX}l`:
-                    success = charley.logCurrentGame();
+                    if (charley !== null) charley.logCurrentGame();
+                    else console.log(`No game started`);
+                    break;
 
                 case `${PREFIX}p`:
-                    success = charley.play(bot, idChannel);
-                    break;
-
-                case `${PREFIX}r`:
-                    success = charley.resume(bot);
-                    break;
-
-                case `${PREFIX}s`:
-                    success = charley.stop();
-                    break;
-
-                case `${PREFIX}t`:
-                    if (charley.isPlaying()) {
-                        success = false;
-                    } else {
-                        success = true;
-                        if (message.length > 2) {
-                            charleyWritingTests(bot, idChannel, message[2]);
-                        } else {
-                            charleyBasicTests(bot, idUser, idChannel);
-                        }
+                    if (charley === null || !charley.isPlaying()) {
+                        charley = new CharleyGame(channel);
+                        charley.startGame();
                     }
                     break;
 
-                default:
-                    success = false;
+                case `${PREFIX}r`:
+                    if (charley !== null) charley.resumeGame();
+                    break;
+
+                case `${PREFIX}s`:
+                    if (charley !== null) charley.stop();
+                    break;
+
+                case `${PREFIX}t`:
+                    if (charley === null || !charley.isPlaying()) {
+                        charley = new CharleyGame(channel);
+                        charley.testGame();
+                    }
                     break;
             }
-
-            if (!success)
-                msgObj.reply(` fuck you you drink ${randomize(5)} sips`);
         } else if (!isBot) {
-            charley.tryAnswer(message, msgObj);
+            //charley.tryAnswer(message, msgObj);
         }
     });
 };
