@@ -1,7 +1,8 @@
-const { randomize } = require('../../helpers/math');
-const probabilityArray = [1, 1, 1, 2, 2, 3];
 const ActionType = require('./ActionTypeEnum');
+const { randomize } = require('../../helpers/math');
 
+const probabilityArray = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4];
+//Return a random number of sips determined by the probability array
 getNbSips = (pAdd = 0) => {
     return probabilityArray[randomize(probabilityArray.length, -1)] + pAdd;
 };
@@ -22,7 +23,7 @@ takeSips = pCurrPlayer => {
 };
 
 shareSips = pCurrPlayer => {
-    // Determines the number of sips to drink
+    // Determines the number of sips to drink for each player
     let nbSips = getNbSips();
 
     return {
@@ -71,6 +72,7 @@ rule = pCurrPlayer => {
     };
 };
 
+//Make a multiplication question to answer. The first one to answer will have sips to give.
 multiplication = () => {
     let number1 = randomize(12);
     let number2 = randomize(12);
@@ -83,6 +85,7 @@ multiplication = () => {
     };
 };
 
+//Return a random number to type. The first one to answer will have sips to give.
 randNumber = () => {
     waitingAnswer = randomize(9500, 10050);
     return {
@@ -105,10 +108,5 @@ module.exports.actionsArray = [
     { func: giveSips },
     { func: takeSips },
     { func: shareSips },
-    { func: everyoneDrink },
-    { func: category },
-    { func: rime },
-    { func: multiplication },
-    { func: randNumber },
-    { func: rule }
+    { func: everyoneDrink }
 ];

@@ -8,6 +8,7 @@ const GameState = {
     PAUSED: 2
 };
 
+let lastGames = [100, 101];
 module.exports = class Game {
     constructor(pChannel, pPlayers = []) {
         this.players = pPlayers;
@@ -29,9 +30,16 @@ module.exports = class Game {
                         randomize(this.players.length, -1)
                     ];
                     let currentGame = randomize(this.actions.length, -1);
+
+                    while (lastGames.includes(currentGame)) {
+                        currentGame = randomize(this.actions.length, -1);
+                    }
+
+                    lastGames.shift();
+                    lastGames.push(currentGame);
                     this.playAction(currentGame, currPlayer);
                 }
-            }, 1000);
+            }, 18000);
 
             if (this.players.length === 0) {
                 this.channel.send(
